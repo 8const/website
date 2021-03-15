@@ -1,44 +1,105 @@
 <html>
         <head> <title> HI MARK </title>
                 <link rel="stylesheet" href="/static/style.css"> 
-                <!--		<script src="/static/script.js"></script> -->
-
-                <script> 
-
-
-                        function hide(id) {
-
-                                document.getElementById(id).style.visibility = "hidden";
-                        }
-
-                        function show(id) {
-                                document.getElementById(id).style.visibility = "visible";
-
-                        }
-
-
-
-                </script>
-
-                
+                <!-- <script type="text/javascript" src="/static/script.js"></script> -->
         </head>
 
-
         <body> <h1 id = "kek"> Hi Mark!</h1>
+                <script>
+// wait for the content of the window element 
+// to load, then performs the operations. 
+// This is considered best practice. 
+window.addEventListener('load', ()=>{ 
+        
+    resize(); // Resizes the canvas once the window loads 
+    document.addEventListener('mousedown', startPainting); 
+    document.addEventListener('mouseup', stopPainting); 
+    document.addEventListener('mousemove', sketch); 
+    window.addEventListener('resize', resize); 
+}); 
+    
+const canvas = document.querySelector('#canvas'); 
+const canvas = document.querySelector('lolll'); 
+   
+alert("23");
+alert(typeof(canvas));
+// Context for the canvas for 2 dimensional operations 
+const ctx = canvas.getContext('2d'); 
+    
+// Resizes the canvas to the available size of the window. 
+function resize(){ 
+  ctx.canvas.width = window.innerWidth; 
+  ctx.canvas.height = window.innerHeight; 
+} 
+    
+// Stores the initial position of the cursor 
+let coord = {x:0 , y:0};  
+   
+// This is the flag that we are going to use to  
+// trigger drawing 
+let paint = false; 
+    
+// Updates the coordianates of the cursor when  
+// an event e is triggered to the coordinates where  
+// the said event is triggered. 
+function getPosition(event){ 
+  coord.x = event.clientX - canvas.offsetLeft; 
+  coord.y = event.clientY - canvas.offsetTop; 
+} 
+  
+// The following functions toggle the flag to start 
+// and stop drawing 
+function startPainting(event){ 
+  paint = true; 
+  getPosition(event); 
+} 
+function stopPainting(){ 
+  paint = false; 
+} 
+    
+function sketch(event){ 
+  if (!paint) return; 
+  ctx.beginPath(); 
+    
+  ctx.lineWidth = 5; 
+   
+  // Sets the end of the lines drawn 
+  // to a round shape. 
+  ctx.lineCap = 'round'; 
+    
+  ctx.strokeStyle = 'green'; 
+      
+  // The cursor to start drawing 
+  // moves to this coordinate 
+  ctx.moveTo(coord.x, coord.y); 
+   
+  // The position of the cursor 
+  // gets updated as we move the 
+  // mouse around. 
+  getPosition(event); 
+   
+  // A line is traced from start 
+  // coordinate to this coordinate 
+  ctx.lineTo(coord.x , coord.y); 
+    
+  // Draws the line. 
+  ctx.stroke(); 
+} 
+
+ctx.moveTo(0, 0);
+ctx.lineTo(200, 100);
+ctx.stroke();
+
+</script> 
+
+
                 <hr>
-
-                <p>
-                <!-- <canvas id="canvas" width="28" height="28"> </canvas>  -->
-
-
-		<img src="/static/const.jpg" width="50%" id="kekk">
+                <canvas id="canvas" width="256" height="256" > </canvas>  
+                <!-- <img src="/static/const.jpg" width="50%" id="kekk"> -->
                 <button onclick="hide('kekk')"> REMOVE</button> 
                 <button onclick="show('kekk')"> ADD </button> 
-
                 <hr>
-
-
-
-
         </body>
 </html>
+
+

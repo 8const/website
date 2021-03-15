@@ -4,19 +4,18 @@ function hide(id) {
 }
 
 function show(id) {
-        document.getElementById(id).style.visibility = "hidden";
+        document.getElementById(id).style.visibility = "visible";
 
 }
 
 
 
-/*
 // wait for the content of the window element 
 // to load, then performs the operations. 
 // This is considered best practice. 
 window.addEventListener('load', ()=>{ 
         
-  //  resize(); // Resizes the canvas once the window loads 
+    resize(); // Resizes the canvas once the window loads 
     document.addEventListener('mousedown', startPainting); 
     document.addEventListener('mouseup', stopPainting); 
     document.addEventListener('mousemove', sketch); 
@@ -92,4 +91,4 @@ ctx.moveTo(0, 0);
 ctx.lineTo(200, 100);
 ctx.stroke();
 
-*/
+

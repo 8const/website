@@ -1,15 +1,78 @@
 from flask import render_template
-
+import pickle
+import base64
+import numpy as np
+import cv2
 from flask import Flask, redirect, url_for, request
+
+
+
+
+from PIL import Image
+import base64
+import io
+import numpy as np
+
+
+
+W0 = np.load("W0.npy")
+W1 = np.load("W1.npy")
+b0 = np.load("b0.npy")
+b1 = np.load("b1.npy")
+
+relu = lambda x: np.maximum(x, 0.)
+
+def softmax(x):
+    exps = np.exp(x - np.max(x))
+    return exps / np.sum(exps)
+
+#layer 2 activation
+def matrix_softmax(m):
+    return np.apply_along_axis(softmax, 0, m)
+
+def predict(img):
+    x0 = img.reshape(-1,1)
+    x1 = W0 @ x0 + b0
+    l1 = relu(x1)
+    x2 = W1 @ l1 + b1
+    l2 = softmax(x2)
+    return np.argmax(l2)
+
+
+import base64
+from PIL import Image
+from io import BytesIO
+
 app = Flask(__name__)
 
 @app.route('/')
-def text():
-    return render_template("1.html") 
+def text(): 
+    return render_template("3.html") 
+    
 
-@app.route('/lol')
+@app.route('/="predict"', methods=["POST"])
 def text2():
-    return render_template("1.html") 
+    url_value = request.form['url']
+
+    #url_value was set by javascript to contain encoded image's bytes
+    #since url's value is somerthing like:
+    #data:image/png;base64,iVBORw0KGgoAAAANSU...useful bytes
+    #                      ^ 
+    #we don't need anythin before the marked byte i
+    #it happens to be byte number 22
+    nice_bytes = url_value[22: ]
+
+
+    im = Image.open(BytesIO(base64.b64decode(nice_bytes))).convert('LA')
+    x = np.array(im)
+
+    #x is really weird and requires some work
+    x = x.T[-1].T
+    #now it's a normal 2D array
+
+
+    return str(predict(x)) 
 
 if __name__ == '__main__':
-    app.run(threaded=True, port=5000)
+    app.run(debug=True)
+
