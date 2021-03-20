@@ -1,0 +1,199 @@
+<html>
+        <head>
+
+  <style>
+
+    body {
+        font-family: "Georgia";
+    }
+
+    h3 {
+        font-family: "Montserrat";
+	font-weight: 512; 
+	font-size: 24;
+	color: black; 
+        margin-bottom: 0;
+        padding: 0;
+
+    }
+
+
+    h2 {
+        font-family: "Montserrat";
+	font-weight: 324; 
+	font-size: 16;
+	color: #002fa7;
+        margin-bottom: 0;
+    }
+
+    h1 {
+	
+        font-family: "Montserrat";
+	font-weight: 400; 
+	font-size: 48;
+	color: #002fa7;
+        margin-bottom: 0;
+    
+    }
+
+    hr {
+        border: none;
+        height: 4px;
+        background-color: #002fa7;
+        margin-top: 10px;
+    }
+
+    #row {
+            display: inline;
+            margin-left: 2%;
+            margin-right: 2%;
+    }
+
+    #b {
+            width:90%; 
+            margin: 0 auto;
+    } 
+
+canvas {
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+	
+  </style>
+
+
+                
+
+
+        </head>
+        <body>
+		<center>
+                <h1> Constantine Larionoff </h1>
+                <h2>
+                        <div>
+                        <div id="row"> NEURAL NETWORK     </div>
+                               <div id="row">  CELLULAR AUTOMATA  </div>
+                                      <div id="row"> PATH FINDING      </div>     
+                        </div>
+                </h2>
+
+                              <hr>
+		
+                </center>
+                <div id="b">
+                        <p>
+                        <p>
+    <center>
+                        <h3 id="b"> This is not a convolutional neural netwok. It only has dense layers. So it's not good. But it's trying its best. </h3>
+                        <p>
+
+		 <form id="MyForm" action="predict" method="POST" enctype="multipart/form-data"> 
+
+                <canvas id="myPics" width="28" height="28" style="border: 2px solid black">
+
+                <script>
+
+// When true, moving the mouse draws on the canvas
+let isDrawing = false;
+let x = 0;
+let y = 0;
+
+myPics = document.getElementById('myPics');
+myPics.style.width  = "280px";
+myPics.style.height = "280px";
+
+const context = myPics.getContext('2d');
+
+// event.offsetX, event.offsetY gives the (x,y) offset from the edge of the canvas.
+
+// Add the event listeners for mousedown, mousemove, and mouseup
+myPics.addEventListener('mousedown', e => {
+  x = e.offsetX/10;
+  y = e.offsetY/10;
+  isDrawing = true;
+});
+
+myPics.addEventListener('mousemove', e => {
+  if (isDrawing === true) {
+    drawLine(context, x, y, e.offsetX/10, e.offsetY/10);
+    x = e.offsetX/10;
+    y = e.offsetY/10;
+  }
+});
+
+window.addEventListener('mouseup', e => {
+  if (isDrawing === true) {
+    drawLine(context, x, y, e.offsetX/10, e.offsetY/10);
+    x = 0;
+    y = 0;
+    isDrawing = false;
+  }
+});
+
+function drawLine(context, x1, y1, x2, y2) {
+  context.imageSmoothingEnabled = false;
+context.msImageSmoothingEnabled = false;
+context.mozImageSmoothingEnabled = false;
+context.webkitImageSmoothingEnabled = false;
+  context.beginPath();
+  context.lineCap = 'round';
+  context.lineJoin = 'round';
+  context.strokeStyle = 'black';
+  context.lineWidth = 3;
+  context.moveTo(x1, y1);
+  context.lineTo(x2, y2);
+  context.stroke();
+  context.closePath()
+
+
+
+}
+
+
+function clearr() {
+  context.clearRect(0, 0, myPics.width, myPics.height);
+}
+
+function savee() {
+    var image = myPics.toDataURL("image/png").replace("image/png", "image/octet-stream"); 
+    window.location.href=image;
+}
+
+
+function getStuff() {
+    var image = new Image();
+    var url = document.getElementById('url');
+    image.id = "pic";
+    image.src = myPics.toDataURL();
+    url.value = image.src;
+
+}
+function ggetStuff() {
+        var canvas  = document.getElementById('myPics');
+        var url     = document.getElementById('url');
+        var dataURL = canvas.toDataURL();
+        url.value   = dataURL;
+}
+
+</script>
+</canvas>
+<input type="hidden" id="url" name="url" value="kek">
+<p>
+<input style="  background-color: white;
+  border: 2px solid #002fa7; padding: 15px 32px; text-align: center; text-decoration: none; disnline-block; font-size: 16px;" onclick="ggetStuff();" type="submit" id="predict" value="Predict"> 
+</form>
+
+
+<div dysplay="inline" style='font-family:"Georgia"; font-weight:400; font-size:96; color:#002fa7;'>
+{{number}}
+</div>
+
+                    <p> 
+                        It nevertheless does a decent job at recognizing 0, 1, 2, 3, 4, 5. It absolutely hates number 9. If 6 and 7 are small it recognises them. Number 8 is triky but possible. The reason it sucks so much is because I made it from scratch in numpy. So it's not quite as good as some more complex models. But I'll probably add a conv layer at some point to make it better. Currently I like it the way it is: terrible but fun. 
+
+        </body>
+        </html>
+

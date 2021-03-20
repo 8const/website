@@ -20,6 +20,8 @@ W1 = np.load("W1.npy")
 b0 = np.load("b0.npy")
 b1 = np.load("b1.npy")
 
+
+
 relu = lambda x: np.maximum(x, 0.)
 
 def softmax(x):
@@ -30,13 +32,16 @@ def softmax(x):
 def matrix_softmax(m):
     return np.apply_along_axis(softmax, 0, m)
 
+#trouble with 6 and 9
+#they are only good if tilted
 def predict(img):
     x0 = img.reshape(-1,1)
     x1 = W0 @ x0 + b0
     l1 = relu(x1)
-    x2 = W1 @ l1 + b1
+    x2 = (W1 @ l1 + b1) / 512 
     l2 = softmax(x2)
-    return np.argmax(l2)
+    return str(np.argmax(l2)) 
+
 
 
 import base64
@@ -46,13 +51,18 @@ from io import BytesIO
 app = Flask(__name__)
 
 @app.route('/')
-def text(): 
+def home(): 
     return render_template("3.html") 
     
-
-@app.route('/="predict"', methods=["POST"])
-def text2():
+@app.route('/neural_network/<n>')
+def neural_network(n): 
+    print("NNNNN")
+    return render_template("neural_network.html", number=n) 
+ 
+@app.route('/neural_network/predict', methods=["POST"])
+def guess():
     url_value = request.form['url']
+    print("AAAAAA")
 
     #url_value was set by javascript to contain encoded image's bytes
     #since url's value is somerthing like:
@@ -70,8 +80,11 @@ def text2():
     x = x.T[-1].T
     #now it's a normal 2D array
 
+    x = cv2.resize(x, (28,28))
+    string = str(predict(x)) 
+    
 
-    return str(predict(x)) 
+    return redirect(string) 
 
 if __name__ == '__main__':
     app.run(debug=True)
