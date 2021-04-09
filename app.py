@@ -38,7 +38,7 @@ def predict(img):
     x0 = img.reshape(-1,1)
     x1 = W0 @ x0 + b0
     l1 = relu(x1)
-    x2 = (W1 @ l1 + b1) / 512 
+    x2 = (W1 @ l1 + b1)
     l2 = softmax(x2)
     return str(np.argmax(l2)) 
 
@@ -85,6 +85,13 @@ def guess():
     
 
     return redirect(string) 
+
+
+@app.route('/cellular_automata/', methods=["GET", "POST"])
+def cellular_automata(): 
+    return render_template("cellular_automata.html") 
+ 
+
 
 if __name__ == '__main__':
     app.run(debug=True)
