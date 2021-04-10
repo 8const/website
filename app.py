@@ -13,7 +13,11 @@ import base64
 import io
 import numpy as np
 
+ 
+import os
+import ast
 
+cords = ast.literal_eval(open("cords").read())
 
 W0 = np.load("W0.npy")
 W1 = np.load("W1.npy")
@@ -56,13 +60,11 @@ def home():
     
 @app.route('/neural_network/<n>')
 def neural_network(n): 
-    print("NNNNN")
     return render_template("neural_network.html", number=n) 
  
 @app.route('/neural_network/predict', methods=["POST"])
 def guess():
     url_value = request.form['url']
-    print("AAAAAA")
 
     #url_value was set by javascript to contain encoded image's bytes
     #since url's value is somerthing like:
@@ -87,9 +89,10 @@ def guess():
     return redirect(string) 
 
 
-@app.route('/cellular_automata/', methods=["GET", "POST"])
-def cellular_automata(): 
-    return render_template("cellular_automata.html") 
+@app.route('/cellular_automata/<n>', methods=["GET"])
+def cellular_automata(n): 
+    #if flask.request.method == 'POST':
+           return render_template("cellular_automata.html", cords=cords) 
  
 
 

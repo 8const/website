@@ -5,6 +5,7 @@
 
     body {
         font-family: "Georgia";
+	width:800px;
     }
 
     h3 {
@@ -86,20 +87,28 @@ canvas {
                 <div id="b">
                         <p>
                         <p>
-    <center>
+<center>
                         <h3 id="b"> A cellular automaton models growth of ice crystals. </h3>
                         <p>
 
-<img src="/static/snow.jpg" width="90%">  
-		 <form id="MyForm" action="predict" method="POST" enctype="multipart/form-data"> 
+                        <!--  <img src="/static/snow.jpg" width="90%">   -->
 
-                <canvas id="canvas" width="1024" height="1024" style="border: 2px solid black">
+
+
+
+
+
+
+
+
+
+ <canvas id="canvas" width="512" height="512">
 
                 <script>
 
 			function vertex(n) 
 			{
-			    return  [8*Math.cos(n * Math.PI/3.0 + Math.PI/6.0), 8*Math.sin(n * Math.PI/3.0 + Math.PI/6.0)];
+			    return  [2*Math.cos(n * Math.PI/3.0 + Math.PI/6.0), 2*Math.sin(n * Math.PI/3.0 + Math.PI/6.0)];
 			}
 
 			hex = [];
@@ -109,15 +118,15 @@ canvas {
 
 			function move(co, nudge)
 			{
-			r = [];
-			xx = nudge[0];
-			yy = nudge[1];
-			for (let i = 0; i < 6; i++) {
-				x = co[i][0];
-				y = co[i][1];
-				r.push([x+xx, y+yy]);
-			}			
-			return r;
+                                r = [];
+                                xx = nudge[0];
+                                yy = nudge[1];
+                                for (let i = 0; i < 6; i++) {
+                                        x = co[i][0];
+                                        y = co[i][1];
+                                        r.push([x+xx, y+yy]);
+                                }			
+                                return r;
 			} 
         
                         function cordsToHex(center) 
@@ -131,56 +140,58 @@ canvas {
 
                         function draw(hex)
                         {
-                        var ctx = canvas.getContext('2d');
-                        ctx.beginPath();
-			ctx.moveTo(hex[0][0], hex[0][1]);
-			ctx.lineTo(hex[1][0], hex[1][1]);
-			ctx.lineTo(hex[2][0], hex[2][1]);
-			ctx.lineTo(hex[3][0], hex[3][1]);
-			ctx.lineTo(hex[4][0], hex[4][1]);
-			ctx.lineTo(hex[5][0], hex[5][1]);
-			ctx.closePath();
-			ctx.fill(); 
-                        }
- let cor2 = [[872.928, 744.0],[900.64, 744.0], [879.85596, 756.0], [893.712, 756.0], [859.072, 768.0], [872.928, 768.0], [886.784, 768.0], [900.64, 768.0], [914.496, 768.0],[879.85596, 780.0], [893.712, 780.0], [872.928, 792.0], [900.64, 792.0]];
 
-			for (var j = 0; j < (cor2.length); j++) {
-				draw(cordsToHex(cor2[j]));
-				console.log((cor2[j]));
-			}
+                                var ctx = canvas.getContext('2d');
+
+
+                                ctx.beginPath();
+                                ctx.moveTo(hex[0][0], hex[0][1]);
+                                ctx.lineTo(hex[1][0], hex[1][1]);
+                                ctx.lineTo(hex[2][0], hex[2][1]);
+                                ctx.lineTo(hex[3][0], hex[3][1]);
+                                ctx.lineTo(hex[4][0], hex[4][1]);
+                                ctx.lineTo(hex[5][0], hex[5][1]);
+                                ctx.closePath();
+                                ctx.fill(); 
+                        }
+ let cords = {{cords | tojson}} 
+                        function pic(i)
+                        {
+                                var ctx = canvas.getContext('2d');
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                                co = cords[i];
+
+			        for (var j = 0; j < (co.length); j++) {
+                                        draw(cordsToHex(co[j]));
+                                }
+                        }
 
 
 				
 
         
-/*
-                       var ctx = canvas.getContext('2d');
-			ctx.fillStyle = '#f00';
-			ctx.beginPath();
-			ctx.moveTo(0, 0);
-			ctx.lineTo(100,50);
-			ctx.lineTo(50, 100);
-			ctx.lineTo(0, 90);
-			ctx.closePath();
-			ctx.fill(); 
-*/
-
-
+pic(5);
                 </script>
-</canvas>
-<input type="hidden" id="url" name="url" value="kek">
+
+</canvas> 
 <p>
-<input style="  background-color: white;
-  border: 2px solid #002fa7; padding: 15px 32px; text-align: center; text-decoration: none; disnline-block; font-size: 16px;" onclick="ggetStuff();" type="submit" id="predict" value="Predict"> 
-</form>
 
 
-<div dysplay="inline" style='font-family:"Georgia"; font-weight:400; font-size:96; color:#002fa7;'>
-{{number}}
-</div>
 
-                    <p> 
-                        It nevertheless does a decent job at recognizing 0, 1, 2, 3, 4, 5. It absolutely hates number 9. If 6 and 7 are small it recognises them. Number 8 is triky but possible. The reason it sucks so much is because I made it from scratch in numpy. So it's not quite as good as some more complex models. But I'll probably add a conv layer at some point to make it better. Currently I like it the way it is: terrible but fun. 
+<input type="range" min="0" max="62" value="5" oninput="pic(this.value)">                             
+
+
+
+
+
+
+
+
+
+
+
+</center>
 
         </body>
         </html>
